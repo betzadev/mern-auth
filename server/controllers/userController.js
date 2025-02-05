@@ -5,7 +5,7 @@ export const getUserData = async (req, res) => {
     const { userId } = req.body;
     const user = await userModel.findById(userId);
     if (!user) {
-      res.json({ success: false, message: "User not found" });
+      return res.json({ success: false, message: "User not found" }); // Usa return para terminar la función aquí
     }
     res.json({
       success: true,

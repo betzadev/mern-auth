@@ -37,14 +37,14 @@ export const register = async (req, res) => {
 
     // Send welcome email
 
-    /*   const mailOptions = {
-      from: process.env.EMAIL_USER,
+    const mailOptions = {
+      from: process.env.MAIL_USER,
       to: email,
       subject: "Welcome to EDUTGS",
       text: `Hello ${name}, welcome to EDTUGS. We are glad to have you with us.`,
     };
     await transporter.sendMail(mailOptions);
- */
+
     return res.json({ success: true });
   } catch (error) {
     res.json({ success: false, message: error.message });
@@ -57,7 +57,7 @@ export const login = async (req, res) => {
   if (!email || !password) {
     return res.json({
       success: false,
-      message: "Email and password are required",
+      message: "El correo y la contraseña son requeridos",
     });
   }
   try {
@@ -65,14 +65,14 @@ export const login = async (req, res) => {
     if (!user) {
       return res.json({
         success: false,
-        message: "Invalid email",
+        message: "Correo no registrado",
       });
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.json({
         success: false,
-        message: "Invalid password",
+        message: "Contraseña incorrecta",
       });
     }
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
@@ -120,7 +120,7 @@ export const sendVerifyOtp = async (req, res) => {
 
     await user.save();
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: process.env.MAIL_USER,
       to: user.email,
       subject: "Account Verification OTP",
       text: `Your OTP for account verification is ${otp}`,
@@ -186,7 +186,7 @@ export const sendResetOtp = async (req, res) => {
     await user.save();
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: process.env.MAIL_USER,
       to: user.email,
       subject: "Password Reset OTP",
       text: `Your OTP for password reset is ${otp}. Use this OTP to reset your password.`,
