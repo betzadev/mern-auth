@@ -46,7 +46,7 @@ const Dashboard = () => {
     <div className="min-h-screen flex flex-col bg-[#dcfbff]">
       <div className="max-w-4xl mx-auto mt-12 sm:mt-16 flex-grow px-4 sm:px-8 py-8 sm:py-12">
         <h1 className="text-3xl sm:text-4xl font-bold text-[#022237] mb-3 sm:mb-4 text-center">
-          Bienvenido, {userData.name}!
+          ¡Bienvenido, {userData.name}!
         </h1>
         <p className="text-[#3390bf] text-lg sm:text-xl text-center">
           Explora los temas y cuestionarios disponibles.

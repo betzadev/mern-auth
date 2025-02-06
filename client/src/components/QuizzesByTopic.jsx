@@ -1,6 +1,5 @@
-"use client";
-
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import SubmitQuiz from "./SubmitQuiz";
 
 const QuizzesByTopic = ({ topicId, onBack, userId }) => {
@@ -26,7 +25,6 @@ const QuizzesByTopic = ({ topicId, onBack, userId }) => {
         const data = await response.json();
         if (data.success) {
           setQuizzes(data.quizzes);
-          // Verificar el progreso del usuario para cada cuestionario
           const completed = {};
           data.quizzes.forEach((quiz) => {
             completed[quiz._id] = quiz.completed || false;
@@ -49,45 +47,8 @@ const QuizzesByTopic = ({ topicId, onBack, userId }) => {
     }
   }, [topicId]);
 
-  const handleSubmitQuiz = async (quizId, score, userId) => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/quizzes/submit`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            quizId,
-            score,
-            userId,
-          }),
-        }
-      );
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      if (!data.success) {
-        throw new Error(data.message || "Error al enviar la respuesta");
-      }
-      setCompletedQuizzes((prev) => ({ ...prev, [quizId]: true }));
-    } catch (error) {
-      console.error("Error submitting quiz:", error);
-      throw error;
-    }
-  };
-
-  if (loading) {
-    return <div className="text-center">Cargando...</div>;
-  }
-
-  if (error) {
-    return <div className="text-center text-red-500">{error}</div>;
-  }
-
+  if (loading) return <div className="text-center">Cargando...</div>;
+  if (error) return <div className="text-center text-red-500">{error}</div>;
   if (quizzes.length === 0) {
     return (
       <div className="text-center">
@@ -97,30 +58,35 @@ const QuizzesByTopic = ({ topicId, onBack, userId }) => {
   }
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md">
-      <button
+    <div className="p-6 bg-white shadow-lg rounded-lg max-w-3xl mx-auto">
+      <motion.button
         onClick={onBack}
-        className="mb-4 text-blue-500 hover:underline font-semibold"
+        className="mb-4 flex items-center gap-2 text-blue-600 font-semibold text-lg hover:text-blue-800 transition duration-300"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
       >
-        Volver al detalle del tema
-      </button>
-      <h1 className="text-2xl font-bold mb-4 text-[#022237]">Cuestionarios</h1>
+        ⬅ Volver a la lista de temas
+      </motion.button>
+      <h1 className="text-3xl font-bold text-gray-900 mb-4">Cuestionarios</h1>
       <div className="space-y-4">
-        {quizzes.map((quiz, index) => (
-          <div
+        {quizzes.map((quiz) => (
+          <motion.div
             key={quiz._id}
-            className="p-4 border rounded-lg shadow-sm bg-gray-50"
+            className="p-6 border rounded-xl shadow-lg bg-white transform hover:scale-102 transition-all duration-300"
+            whileHover={{ scale: 1.03 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
           >
             <SubmitQuiz
               quizId={quiz._id}
+              question={quiz.question}
               correctAnswer={quiz.correctAnswer}
               options={quiz.options}
-              onSubmit={handleSubmitQuiz}
-              quizNumber={index + 1}
               userId={userId}
               isCompleted={completedQuizzes[quiz._id]}
             />
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>

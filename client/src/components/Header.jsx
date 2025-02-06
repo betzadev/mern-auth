@@ -18,7 +18,7 @@ const Header = () => {
         className="w-36 h-36 rounded-full mb-6"
       />
       <h1 className="flex items-center gap-2 text-xl sm:text-3xl font-medium mb-2 text-[#022237]">
-        ¡Hola Estudiante!
+        ¡Hola estudiante!
         <img src={assets.hand_wave} className="w-8 aspect-square" alt="" />
       </h1>
       <h2 className="text-3xl sm:text-5xl font-semibold mb-4 text-[#3390bf]">
@@ -29,9 +29,6 @@ const Header = () => {
         Sistemas. Con un enfoque interactivo y dinámico, te ayudaremos a
         comprender y aplicar los conceptos clave de manera efectiva.
       </p>
-      <button className="rounded-full px-8 py-2.5 text-white font-semibold transition-all duration-300 hover:bg-opacity-90 bg-[#6abb55]">
-        Comenzar
-      </button>
     </div>
   );
 };
